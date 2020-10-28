@@ -46,4 +46,8 @@ const Header = () => {
   );
 };
 
+Header.defaultProps = {
+  title: '',
+};
+
 export default Header;
