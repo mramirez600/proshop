@@ -95,8 +95,6 @@ export const payOrder = (orderId, paymentResult) => async (dispatch, getState) =
       type: ORDER_PAY_SUCCESS,
       payload: data,
     })
-
-    // localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
     dispatch({
       type: ORDER_PAY_FAIL,

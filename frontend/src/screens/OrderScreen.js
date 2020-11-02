@@ -7,9 +7,9 @@ import {useDispatch, useSelector} from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { getOrderDetails, payOrder } from '../actions/orderActions'
-import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { ORDER_DETAILS_REQUEST, ORDER_PAY_RESET } from '../constants/orderConstants'
 
-  const OrderScreen = ({ match }) => {
+  const OrderScreen = ({ history, match }) => {
   const orderId = match.params.id
 
   const [ sdkReady, setSdkReady ] = useState(false)
@@ -46,8 +46,9 @@ import { ORDER_PAY_RESET } from '../constants/orderConstants'
     }
 
     if(!order || order._id !== orderId || successPay) {
-        dispatch({ type: ORDER_PAY_RESET})
-        dispatch(getOrderDetails(orderId))
+      dispatch({ type: ORDER_PAY_RESET })
+      dispatch({ type: ORDER_DETAILS_REQUEST })
+      dispatch(getOrderDetails(orderId))
     } else if (!order.isPaid) {
       if (!window.paypal) {
         addPayPalScript()
@@ -56,13 +57,13 @@ import { ORDER_PAY_RESET } from '../constants/orderConstants'
       }
     }
   }, [dispatch, orderId, successPay, order]) 
-
+  
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult))
   }
 
-  return loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : <> <h1>Order {order._id}</h1>
+  return loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : (<> <h1>Order {order._id}</h1>
   <Row>
         <Col md={8}>
           <ListGroup variant='flush'>
@@ -168,7 +169,7 @@ import { ORDER_PAY_RESET } from '../constants/orderConstants'
           </Card>
         </Col>
       </Row> 
-  </>
+  </>)
 }
 
 export default OrderScreen
