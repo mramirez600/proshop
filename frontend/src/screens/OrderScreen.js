@@ -7,9 +7,9 @@ import {useDispatch, useSelector} from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { getOrderDetails, payOrder } from '../actions/orderActions'
-import { ORDER_DETAILS_REQUEST, ORDER_PAY_RESET } from '../constants/orderConstants'
+import { ORDER_PAY_RESET } from '../constants/orderConstants'
 
-  const OrderScreen = ({ history, match }) => {
+  const OrderScreen = ({ match }) => {
   const orderId = match.params.id
 
   const [ sdkReady, setSdkReady ] = useState(false)
@@ -47,7 +47,7 @@ import { ORDER_DETAILS_REQUEST, ORDER_PAY_RESET } from '../constants/orderConsta
 
     if(!order || order._id !== orderId || successPay) {
       dispatch({ type: ORDER_PAY_RESET })
-      dispatch({ type: ORDER_DETAILS_REQUEST })
+      // dispatch({ type: ORDER_DETAILS_REQUEST })
       dispatch(getOrderDetails(orderId))
     } else if (!order.isPaid) {
       if (!window.paypal) {
